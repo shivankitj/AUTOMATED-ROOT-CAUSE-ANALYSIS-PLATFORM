@@ -45,7 +45,7 @@ The system performs the following core functions:
 
 ### 3.3 Operating Environment
 * **OS:** Windows or Linux
-* **Language:** Python (Recommended) or Java
+* **Language:** Python,Java
 * **Database:** MySQL or SQLite
 * **Interface:** Web Browser (Chrome, Firefox, Edge)
 
@@ -116,4 +116,5 @@ The system performs the following core functions:
 * **Rule-Based:** Detection is limited to predefined rules and thresholds.
 * **Resource Constraints:** Designed to work on limited hardware for academic/testing purposes.
 * **Assumption:** It is assumed that logs are available or can be simulated in the environment.
+
 
