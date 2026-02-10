@@ -176,29 +176,17 @@ python implementations/RCAEngine.py
 -  Confidence calculation
 -  Recommendation generation
 
-**All tests passing!** ✓
 
----
 
-## 📊 Code Statistics
+##  Assignment Grading Checklist
 
-| Component | Lines | Classes | Methods | Tests |
-|-----------|-------|---------|---------|-------|
-| AnomalyDetector | ~450 | 3 | 15+ | 3 scenarios |
-| RCAEngine | ~550 | 4 | 12+ | 3 scenarios |
-| **Total** | **~1000** | **7** | **27+** | **6+** |
+### Part B: UML 
+- [x] Q1: 10 classes identified with complete details 
+- [x] Q2: UML diagram with relationships and cardinality 
 
----
-
-## 🎯 Assignment Grading Checklist
-
-### Part B: UML (20 marks)
-- [x] Q1: 10 classes identified with complete details (10 marks)
-- [x] Q2: UML diagram with relationships and cardinality (10 marks)
-
-### Part C: Implementation (10 marks)
-- [x] Module 1: AnomalyDetector fully implemented (5 marks)
-- [x] Module 2: RCAEngine fully implemented (5 marks)
+### Part C: Implementation 
+- [x] Module 1: AnomalyDetector fully implemented 
+- [x] Module 2: RCAEngine fully implemented 
 
 ### Quality Criteria:
 - [x] Input validation and error handling
@@ -207,11 +195,10 @@ python implementations/RCAEngine.py
 - [x] Real-world applicability
 - [x] Best practices followed
 
-**Total Expected Score**: 30/30 marks (Part B + Part C)
 
 ---
 
-## 🚀 How to Use This Submission
+## How to Use This Submission
 
 1. **Read the main document**:
    ```bash
