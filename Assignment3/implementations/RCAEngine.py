@@ -1,12 +1,3 @@
-"""
-RCAEngine Module
-Part C - Module 2 Implementation
-CS331 Software Engineering Lab Assignment 3
-
-This module implements the Root Cause Analysis Engine for the 
-Automated Root Cause Analysis Platform. It identifies root causes of 
-system failures by analyzing correlated events.
-"""
 
 from typing import List, Dict, Optional
 from datetime import datetime, timedelta
