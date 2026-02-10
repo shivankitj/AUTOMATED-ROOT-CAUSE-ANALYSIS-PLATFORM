@@ -4,15 +4,13 @@
 
 **Project**: Automated Root Cause Analysis Platform (ARCA) for Deployment Errors  
 **Date**: February 9, 2026  
-**Status**:  All components completed successfully
-
 ---
 
 ## What Was Updated
 
-### Part B: UML Class Diagrams (20 marks)
+### Part B: UML Class Diagrams 
 
-#### Q1. Key Classes Identification (10 marks) 
+#### Q1. Key Classes Identification  
 
 **10 Classes Identified:**
 1. **LogCollector** - Continuous log data collection with incremental reading
@@ -31,7 +29,7 @@ All classes include:
 -  All methods with parameters and return types
 -  Proper encapsulation and abstraction
 
-#### Q2. UML Class Diagram (10 marks) 
+#### Q2. UML Class Diagram 
 
 **Features:**
 -  Complete Mermaid diagram with all 10 classes
