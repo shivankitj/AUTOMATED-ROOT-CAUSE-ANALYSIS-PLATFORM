@@ -1281,7 +1281,7 @@ sequenceDiagram
 ```
 
 ---
-// DONE BY PRIYANSHU KUNMAR (2301163) 
+// DONE BY PRIYANSHU KUMAR (2301163) 
 
 ## VI. Security Configuration
 
