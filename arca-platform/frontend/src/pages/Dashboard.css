@@ -1,0 +1,162 @@
+.dashboard {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Metrics Grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.metric-item {
+  padding: 16px;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.metric-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.metric-bar {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.metric-fill {
+  height: 100%;
+  background: #4CAF50;
+  transition: width 0.3s ease;
+}
+
+.metric-bar.warning .metric-fill {
+  background: #ff9800;
+}
+
+.metric-bar.critical .metric-fill {
+  background: #f44336;
+}
+
+/* Anomaly List */
+.anomaly-list {
+  margin-top: 16px;
+}
+
+.anomaly-item {
+  padding: 16px;
+  border-left: 4px solid #2196F3;
+  background: #f8f9fa;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  transition: transform 0.2s;
+}
+
+.anomaly-item:hover {
+  transform: translateX(4px);
+}
+
+.anomaly-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.anomaly-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.anomaly-description {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.anomaly-metric {
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
+/* Report List */
+.report-list {
+  margin-top: 16px;
+}
+
+.report-item {
+  padding: 16px;
+  background: #f8f9fa;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  border-left: 4px solid #4CAF50;
+  transition: transform 0.2s;
+}
+
+.report-item:hover {
+  transform: translateX(4px);
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.report-cause {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.report-confidence {
+  font-size: 12px;
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.report-time {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.report-rec {
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-style: italic;
+}
