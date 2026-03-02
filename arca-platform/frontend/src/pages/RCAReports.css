@@ -1,0 +1,144 @@
+.rca-reports-page {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.reports-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.report-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.report-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.report-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+  background: white;
+  transition: background 0.2s;
+}
+
+.report-summary:hover {
+  background: #f8f9fa;
+}
+
+.report-main h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.report-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.confidence-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.report-date {
+  font-size: 13px;
+  color: #666;
+}
+
+.expand-btn {
+  background: #f0f0f0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.expand-btn:hover {
+  background: #e0e0e0;
+}
+
+.report-details {
+  padding: 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #ddd;
+}
+
+.detail-section {
+  margin-bottom: 20px;
+}
+
+.detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.detail-section h4 {
+  font-size: 14px;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.component-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.component-tag {
+  background: #2196F3;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.causal-chain {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+.causal-chain li {
+  padding: 8px 12px;
+  background: white;
+  border-left: 3px solid #2196F3;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.recommendations {
+  list-style: none;
+  padding: 0;
+}
+
+.recommendations li {
+  padding: 12px;
+  background: white;
+  border-left: 3px solid #4CAF50;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: start;
+  gap: 12px;
+}
+
+.rec-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}

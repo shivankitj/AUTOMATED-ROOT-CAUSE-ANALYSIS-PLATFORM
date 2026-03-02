@@ -119,4 +119,276 @@ The system performs the following core functions:
 * **Resource Constraints:** Designed to work on limited hardware for academic/testing purposes.
 * **Assumption:** It is assumed that logs are available or can be simulated in the environment.
 
+---
+
+##  9. Deployment Architecture
+
+### 9.1 Technology Stack
+
+**Backend (AWS EC2):**
+* **Platform:** AWS EC2 (t3.medium: 2 vCPU, 4GB RAM)
+* **Operating System:** Ubuntu 22.04 LTS
+* **Runtime:** Python 3.11+
+* **Framework:** Flask 3.0 or FastAPI
+* **WSGI Server:** Gunicorn (4 workers)
+* **Reverse Proxy:** Nginx
+* **Process Manager:** Systemd
+
+**Frontend (Vercel):**
+* **Platform:** Vercel (Serverless with CDN)
+* **Framework:** React 18 + Vite
+* **UI Library:** Material-UI
+* **Build Tool:** Vite
+* **API Client:** Axios
+
+**Database:**
+* **Provider:** MongoDB Atlas (Cloud)
+* **Tier:** M0 Free / M10 Production
+* **Features:** 3-node replica set, automated backups
+
+**CI/CD:**
+* **Platform:** GitHub Actions
+* **Features:** Automated testing, deployment, health checks
+
+### 9.2 Deployment Topology
+
+```
+Users → Vercel (Frontend) → AWS EC2 (Backend) → MongoDB Atlas (Database)
+                ↓
+         GitHub Actions (CI/CD)
+```
+
+### 9.3 Why This Architecture?
+
+✅ **Scalability:** Independent scaling of frontend and backend  
+✅ **Performance:** Vercel CDN for global content delivery  
+✅ **Cost-Effective:** Free tier options, pay-as-you-grow  
+✅ **Reliability:** Managed services with high availability  
+✅ **Security:** HTTPS, VPC, security groups, JWT authentication  
+✅ **Developer Experience:** Automated deployments with git push  
+
+---
+
+##  10. Project Structure
+
+```
+LAB_Software/
+├── README.md
+├── Assignment3/
+│   ├── COMPLETION_SUMMARY.md
+│   ├── diagrams/
+│   │   └── uml_class_diagram.md
+│   └── implementations/
+│       ├── AnomalyDetector.py
+│       ├── RCAEngine.py
+│       └── IMPLEMENTATION_GUIDE.md
+├── Assignment4/
+│   └── Assignment4_Solution.md
+├── Assignment5/
+│   ├── Assignment5_Solution.md
+│   ├── COMPLETION_SUMMARY.md
+│   └── deployment-scripts/
+│       ├── setup_ec2.sh
+│       ├── deploy.sh
+│       └── README.md
+└── Assignments/ (reference materials)
+```
+
+---
+
+##  11. Assignments Completed
+
+### Assignment 3: UML Design & Implementation ✅
+- **Part A:** Requirements analysis
+- **Part B:** UML class diagrams (10 classes with relationships)
+- **Part C:** Implementation of AnomalyDetector and RCAEngine modules
+- **Status:** Complete with comprehensive documentation
+
+### Assignment 4: Software Architecture Analysis ✅
+- **Architecture Selected:** Layered (N-Tier) Architecture
+- **Components Identified:** 10 major components across 5 layers
+- **Justification:** Detailed analysis of maintainability, scalability, performance
+- **Status:** Complete with architecture diagrams
+
+### Assignment 5: Deployment and DevOps ✅
+- **Cloud Platform:** AWS EC2 + Vercel + MongoDB Atlas
+- **CI/CD Pipeline:** GitHub Actions automation
+- **Documentation:** 50+ page deployment guide
+- **Scripts:** Automated setup and deployment scripts
+- **Security:** SSL/TLS, authentication, rate limiting
+- **Monitoring:** CloudWatch, logging, health checks
+- **Status:** Production-ready deployment architecture
+
+---
+
+##  12. Quick Start Guide
+
+### Development Setup
+
+```bash
+# Clone repository
+git clone https://github.com/YOUR_USERNAME/arca-platform.git
+cd arca-platform
+
+# Backend setup
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Frontend setup
+cd frontend
+npm install
+npm run dev
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your credentials
+```
+
+### Run Tests
+
+```bash
+# Backend tests
+python Assignment3/implementations/AnomalyDetector.py
+python Assignment3/implementations/RCAEngine.py
+
+# Run all tests
+pytest tests/ -v
+```
+
+### Deploy to Production
+
+See [Assignment5/Assignment5_Solution.md](Assignment5/Assignment5_Solution.md) for complete deployment guide.
+
+---
+
+##  13. Key Features Implemented
+
+✅ **Anomaly Detection**
+- Threshold-based detection (CPU > 80%, Memory > 85%)
+- Statistical analysis (mean + 2σ standard deviation)
+- Log-level based detection (ERROR, CRITICAL)
+- Deployment error keyword matching
+
+✅ **Root Cause Analysis**
+- Rule-based pattern matching
+- Confidence scoring (0.0-1.0)
+- Causal chain generation
+- Evidence collection
+- Automated recommendations
+
+✅ **Deployment Infrastructure**
+- AWS EC2 backend hosting
+- Vercel frontend CDN
+- MongoDB Atlas database
+- Automated CI/CD pipeline
+- SSL/TLS security
+- Health monitoring
+
+---
+
+##  14. Documentation
+
+| Document | Location | Description |
+|----------|----------|-------------|
+| **System Overview** | README.md | This file - project introduction |
+| **UML Diagrams** | Assignment3/diagrams/ | Class diagrams and relationships |
+| **Implementation Guide** | Assignment3/implementations/ | AnomalyDetector & RCAEngine code |
+| **Architecture Analysis** | Assignment4/Assignment4_Solution.md | Layered architecture justification |
+| **Deployment Guide** | Assignment5/Assignment5_Solution.md | Complete deployment documentation |
+| **Scripts** | Assignment5/deployment-scripts/ | Automated setup scripts |
+
+---
+
+##  15. Performance Specifications
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| API Response Time | < 200ms | Average for detection endpoint |
+| Frontend Load Time | < 2 seconds | Initial page load |
+| Database Query Time | < 50ms | Average query latency |
+| Anomaly Detection | Real-time | Within 1 minute of occurrence |
+| Concurrent Users | 100-500 | With t3.medium instance |
+| Uptime | 99.5%+ | With proper monitoring |
+
+---
+
+##  16. Security Features
+
+* **Transport Security:** SSL/TLS encryption on all connections
+* **Authentication:** JWT token-based authentication
+* **Authorization:** Role-based access control
+* **Network Security:** AWS Security Groups, VPC isolation
+* **Application Security:** Input validation, rate limiting, CORS
+* **Secrets Management:** Environment variables, no hard-coded credentials
+* **Database Security:** Encrypted connections, IP whitelisting
+
+---
+
+##  17. Cost Estimates
+
+### Development Environment
+- **Monthly Cost:** ~$15
+- **Components:** EC2 t3.small, MongoDB M0 (free), Vercel Hobby (free)
+
+### Production Environment (Small Scale)
+- **Monthly Cost:** ~$232
+- **Components:** EC2 t3.medium, MongoDB M10, Vercel Pro, data transfer
+
+### Production Environment (Medium Scale)
+- **Monthly Cost:** ~$442
+- **Components:** EC2 t3.large, MongoDB M20, enhanced features
+
+See [Assignment5/Assignment5_Solution.md](Assignment5/Assignment5_Solution.md) for detailed cost breakdown.
+
+---
+
+##  18. Future Enhancements
+
+* **Machine Learning:** Replace rule-based detection with ML models
+* **Auto-Scaling:** Implement horizontal scaling with load balancers
+* **Multi-Region:** Deploy across multiple AWS regions
+* **Advanced Monitoring:** Integrate with Datadog or New Relic
+* **Mobile App:** iOS/Android app for alerts and monitoring
+* **Kubernetes:** Containerized deployment with K8s orchestration
+* **Real-time Updates:** WebSocket-based live dashboard
+
+---
+
+##  19. Contributing
+
+This is an academic project for CS331 Software Engineering Lab. For questions or suggestions:
+
+1. Review the documentation in each assignment folder
+2. Check troubleshooting guides
+3. Refer to inline code comments
+4. Contact the development team
+
+---
+
+##  20. License & Acknowledgments
+
+**Course:** CS331 - Software Engineering Lab  
+**Institution:** [Your Institution Name]  
+**Year:** 2026  
+
+**Technologies Used:**
+- Python, Flask, React, MongoDB
+- AWS (EC2, S3, CloudWatch)
+- Vercel, GitHub Actions
+- Nginx, Gunicorn, Systemd
+
+**References:**
+- AWS Documentation
+- MongoDB Atlas Documentation
+- Vercel Documentation
+- Flask Documentation
+- React Documentation
+
+---
+
+**Project Status:** ✅ Complete and Production-Ready  
+**Last Updated:** February 17, 2026  
+**Version:** 1.0.0
+
 
