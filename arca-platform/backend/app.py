@@ -35,9 +35,9 @@ CORS(app, origins=os.getenv('ALLOWED_ORIGINS', '*').split(','))
 try:
     mongo_client = MongoClient(os.getenv('MONGODB_URI', 'mongodb://localhost:27017/'))
     db = mongo_client[os.getenv('MONGODB_DB_NAME', 'arca_db')]
-    print("✅ MongoDB connected successfully")
+    print("[OK] MongoDB connected successfully")
 except Exception as e:
-    print(f"❌ MongoDB connection failed: {e}")
+    print(f"[ERROR] MongoDB connection failed: {e}")
     db = None
 
 # Initialize ARCA components
@@ -66,7 +66,7 @@ def health_check():
         'service': 'ARCA Backend',
         'version': '1.0.0',
         'timestamp': datetime.now().isoformat(),
-        'database': 'connected' if db else 'disconnected'
+        'database': 'connected' if db is not None else 'disconnected'
     }), 200
 
 
@@ -74,12 +74,12 @@ def health_check():
 def get_system_health():
     """Get overall system health status"""
     try:
-        anomaly_count = db.anomalies.count_documents({}) if db else 0
-        rca_count = db.rca_results.count_documents({}) if db else 0
+        anomaly_count = db.anomalies.count_documents({}) if db is not None else 0
+        rca_count = db.rca_results.count_documents({}) if db is not None else 0
         
         # Get recent anomalies
         recent_anomalies = []
-        if db:
+        if db is not None:
             anomalies = list(db.anomalies.find().sort('timestamp', -1).limit(5))
             for anomaly in anomalies:
                 anomaly['_id'] = str(anomaly['_id'])
@@ -118,7 +118,7 @@ def get_anomalies():
         if severity:
             query['severity'] = severity.upper()
         
-        if db:
+        if db is not None:
             anomalies = list(db.anomalies.find(query).sort('timestamp', -1).limit(limit))
             for anomaly in anomalies:
                 anomaly['_id'] = str(anomaly['_id'])
@@ -152,7 +152,7 @@ def detect_anomalies():
         
         # Store in database
         all_anomalies = log_anomalies + metric_anomalies
-        if db and all_anomalies:
+        if db is not None and all_anomalies:
             for anomaly in all_anomalies:
                 db.anomalies.insert_one(anomaly.to_dict())
         
@@ -165,7 +165,7 @@ def detect_anomalies():
             # Perform RCA
             if correlated:
                 rca_result = rca_engine.analyze_root_cause(correlated)
-                if db:
+                if db is not None:
                     db.rca_results.insert_one({
                         'root_cause': rca_result.root_cause,
                         'confidence': rca_result.confidence,
@@ -208,7 +208,7 @@ def analyze_root_cause():
         
         # Fetch anomalies from database
         anomalies = []
-        if db:
+        if db is not None:
             for anomaly_id in anomaly_ids:
                 anomaly_data = db.anomalies.find_one({'id': anomaly_id})
                 if anomaly_data:
@@ -236,7 +236,7 @@ def analyze_root_cause():
             'timestamp': rca_result.timestamp.isoformat()
         }
         
-        if db:
+        if db is not None:
             db.rca_results.insert_one(result_dict)
         
         return jsonify(result_dict), 200
@@ -250,7 +250,7 @@ def get_rca_reports():
     try:
         limit = int(request.args.get('limit', 20))
         
-        if db:
+        if db is not None:
             reports = list(db.rca_results.find().sort('timestamp', -1).limit(limit))
             for report in reports:
                 report['_id'] = str(report['_id'])
@@ -341,7 +341,7 @@ def get_metrics_history():
     try:
         limit = int(request.args.get('limit', 100))
         
-        if db:
+        if db is not None:
             metrics = list(db.metrics.find().sort('timestamp', -1).limit(limit))
             for metric in metrics:
                 metric['_id'] = str(metric['_id'])
@@ -364,7 +364,7 @@ def get_metrics_history():
 def get_alerts():
     """Get all alerts"""
     try:
-        if db:
+        if db is not None:
             alerts = list(db.alerts.find().sort('timestamp', -1).limit(50))
             for alert in alerts:
                 alert['_id'] = str(alert['_id'])
@@ -389,7 +389,7 @@ def acknowledge_alert():
         if not alert_id:
             return jsonify({'error': 'No alert ID provided'}), 400
         
-        if db:
+        if db is not None:
             result = db.alerts.update_one(
                 {'id': alert_id},
                 {'$set': {
@@ -416,7 +416,7 @@ def acknowledge_alert():
 def get_statistics():
     """Get platform statistics"""
     try:
-        if not db:
+        if db is None:
             return jsonify({'error': 'Database not available'}), 500
         
         stats = {
@@ -462,10 +462,10 @@ if __name__ == '__main__':
     debug = os.getenv('DEBUG', 'False') == 'True'
     
     print("=" * 50)
-    print("🚀 ARCA Platform Backend Starting...")
-    print(f"📡 Port: {port}")
-    print(f"🐛 Debug: {debug}")
-    print(f"🗄️  Database: {os.getenv('MONGODB_DB_NAME', 'arca_db')}")
+    print("ARCA Platform Backend Starting...")
+    print(f"Port: {port}")
+    print(f"Debug: {debug}")
+    print(f"Database: {os.getenv('MONGODB_DB_NAME', 'arca_db')}")
     print("=" * 50)
     
     app.run(

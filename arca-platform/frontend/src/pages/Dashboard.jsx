@@ -4,27 +4,35 @@ import './Dashboard.css';
 
 function Dashboard() {
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [stats, setStats] = useState(null);
   const [recentAnomalies, setRecentAnomalies] = useState([]);
   const [recentReports, setRecentReports] = useState([]);
   const [currentMetrics, setCurrentMetrics] = useState(null);
   const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
+  const [recentLimit, setRecentLimit] = useState(5);
 
   useEffect(() => {
     loadDashboardData();
-    const interval = setInterval(loadDashboardData, 30000); // Refresh every 30s
+    const interval = setInterval(() => loadDashboardData(), 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [recentLimit]);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = async (isManual = false) => {
     try {
-      setLoading(true);
+      if (!stats) {
+        setLoading(true);
+      }
+      if (isManual) {
+        setRefreshing(true);
+      }
       setError(null);
 
       const [statsRes, anomaliesRes, reportsRes, metricsRes] = await Promise.all([
         getStatistics(),
-        getAnomalies({ limit: 5 }),
-        getRCAReports({ limit: 5 }),
+        getAnomalies({ limit: recentLimit }),
+        getRCAReports({ limit: recentLimit }),
         getCurrentMetrics()
       ]);
 
@@ -32,11 +40,13 @@ function Dashboard() {
       setRecentAnomalies(anomaliesRes.data.anomalies || []);
       setRecentReports(reportsRes.data.reports || []);
       setCurrentMetrics(metricsRes.data);
+      setLastUpdated(new Date());
     } catch (err) {
       console.error('Error loading dashboard:', err);
       setError('Failed to load dashboard data');
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -50,9 +60,35 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <div className="page-header">
-        <h1>Dashboard</h1>
-        <p>Real-time monitoring and root cause analysis</p>
+      <div className="page-header page-header-row">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Real-time monitoring and root cause analysis</p>
+          <div className="muted-text">
+            Last updated: {lastUpdated ? lastUpdated.toLocaleTimeString() : 'Not yet available'}
+          </div>
+        </div>
+        <div className="page-actions">
+          <label htmlFor="dashboard-limit" className="muted-text">List size</label>
+          <select
+            id="dashboard-limit"
+            className="input-control"
+            value={recentLimit}
+            onChange={(e) => setRecentLimit(Number(e.target.value))}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </select>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => loadDashboardData(true)}
+            disabled={refreshing}
+          >
+            {refreshing ? 'Refreshing...' : 'Refresh'}
+          </button>
+        </div>
       </div>
 
       {/* Statistics Cards */}
@@ -158,7 +194,7 @@ function Dashboard() {
                   <div className="report-header">
                     <span className="report-cause">{report.root_cause}</span>
                     <span className="report-confidence">
-                      {(report.confidence * 100).toFixed(0)}% confidence
+                      {((report.confidence || 0) * 100).toFixed(0)}% confidence
                     </span>
                   </div>
                   <div className="report-time">{formatTime(report.timestamp)}</div>

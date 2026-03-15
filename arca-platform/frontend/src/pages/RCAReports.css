@@ -8,6 +8,12 @@
   gap: 16px;
 }
 
+.results-summary {
+  margin-bottom: 12px;
+  color: #607d8b;
+  font-size: 13px;
+}
+
 .report-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -61,10 +67,11 @@
 .expand-btn {
   background: #f0f0f0;
   border: none;
-  padding: 8px 16px;
+  padding: 10px 14px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 600;
   transition: background 0.2s;
 }
 
@@ -73,9 +80,18 @@
 }
 
 .report-details {
+  margin-top: 16px;
   padding: 20px;
   background: #f8f9fa;
-  border-top: 1px solid #ddd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
 }
 
 .detail-section {
