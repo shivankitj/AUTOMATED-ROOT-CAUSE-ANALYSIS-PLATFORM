@@ -7,16 +7,28 @@ function SystemHealth() {
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
     loadSystemHealth();
-    const interval = setInterval(loadSystemHealth, 10000);
+    const interval = setInterval(() => {
+      if (autoRefresh) {
+        loadSystemHealth();
+      }
+    }, 10000);
     return () => clearInterval(interval);
-  }, []);
+  }, [autoRefresh]);
 
-  const loadSystemHealth = async () => {
+  const loadSystemHealth = async (isManual = false) => {
     try {
-      setLoading(true);
+      if (!systemHealth) {
+        setLoading(true);
+      }
+      if (isManual) {
+        setRefreshing(true);
+      }
       setError(null);
       
       const [healthRes, metricsRes] = await Promise.all([
@@ -26,11 +38,13 @@ function SystemHealth() {
 
       setSystemHealth(healthRes.data);
       setMetrics(metricsRes.data);
+      setLastUpdated(new Date());
     } catch (err) {
       console.error('Error loading system health:', err);
       setError('Failed to load system health');
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -54,9 +68,31 @@ function SystemHealth() {
 
   return (
     <div className="system-health-page">
-      <div className="page-header">
-        <h1>System Health</h1>
-        <p>Real-time system status and performance metrics</p>
+      <div className="page-header page-header-row">
+        <div>
+          <h1>System Health</h1>
+          <p>Real-time system status and performance metrics</p>
+          <div className="muted-text">
+            Last updated: {lastUpdated ? lastUpdated.toLocaleTimeString() : 'Not yet available'}
+          </div>
+        </div>
+        <div className="page-actions">
+          <label htmlFor="auto-refresh-toggle" className="muted-text">Auto-refresh</label>
+          <input
+            id="auto-refresh-toggle"
+            type="checkbox"
+            checked={autoRefresh}
+            onChange={(e) => setAutoRefresh(e.target.checked)}
+          />
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => loadSystemHealth(true)}
+            disabled={refreshing}
+          >
+            {refreshing ? 'Refreshing...' : 'Refresh now'}
+          </button>
+        </div>
       </div>
 
       {/* Overall Status */}

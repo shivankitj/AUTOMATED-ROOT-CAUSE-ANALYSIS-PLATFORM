@@ -78,13 +78,15 @@ class MetricCollector:
             Disk usage as percentage (0-100)
         """
         try:
-            disk = psutil.disk_usage('/')
+            import os
+            disk_path = os.path.abspath('/')
+            disk = psutil.disk_usage(disk_path)
             disk_percent = disk.percent
             self.metrics['disk_usage'] = disk_percent
             self.metrics['disk_free_gb'] = disk.free / (1024 ** 3)
             return disk_percent
         except Exception as e:
-            print(f"❌ Error collecting disk usage: {e}")
+            print(f"[ERROR] Error collecting disk usage: {e}")
             return 0.0
     
     def collect_response_time(self, endpoint: Optional[str] = None) -> float:

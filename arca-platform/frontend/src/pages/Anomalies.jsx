@@ -7,6 +7,8 @@ function Anomalies() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('ALL');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedAnomaly, setSelectedAnomaly] = useState(null);
 
   useEffect(() => {
     loadAnomalies();
@@ -40,11 +42,33 @@ function Anomalies() {
     return colors[severity] || '#666';
   };
 
+  const visibleAnomalies = anomalies.filter((anomaly) => {
+    if (!searchTerm.trim()) return true;
+    const term = searchTerm.toLowerCase();
+    return [anomaly.type, anomaly.metric, anomaly.description, anomaly.severity]
+      .filter(Boolean)
+      .some((value) => String(value).toLowerCase().includes(term));
+  });
+
   return (
     <div className="anomalies-page">
-      <div className="page-header">
-        <h1>Anomalies</h1>
-        <p>Detected system and deployment anomalies</p>
+      <div className="page-header page-header-row">
+        <div>
+          <h1>Anomalies</h1>
+          <p>Detected system and deployment anomalies</p>
+        </div>
+        <div className="page-actions">
+          <input
+            type="text"
+            className="input-control"
+            placeholder="Search severity, type, metric..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button type="button" className="btn btn-secondary" onClick={loadAnomalies}>
+            Refresh
+          </button>
+        </div>
       </div>
 
       <div className="card">
@@ -85,10 +109,12 @@ function Anomalies() {
           <div className="loading">Loading anomalies...</div>
         ) : error ? (
           <div className="error">{error}</div>
-        ) : anomalies.length === 0 ? (
+        ) : visibleAnomalies.length === 0 ? (
           <div className="empty-state">No anomalies found</div>
         ) : (
-          <div className="table-container">
+          <>
+            <div className="results-summary">Showing {visibleAnomalies.length} anomalies</div>
+            <div className="table-container">
             <table>
               <thead>
                 <tr>
@@ -101,8 +127,8 @@ function Anomalies() {
                 </tr>
               </thead>
               <tbody>
-                {anomalies.map((anomaly, index) => (
-                  <tr key={index}>
+                {visibleAnomalies.map((anomaly, index) => (
+                  <tr key={index} className="clickable-row" onClick={() => setSelectedAnomaly(anomaly)}>
                     <td>
                       <span
                         className="badge"
@@ -120,7 +146,28 @@ function Anomalies() {
                 ))}
               </tbody>
             </table>
-          </div>
+            </div>
+
+            {selectedAnomaly && (
+              <div className="details-panel">
+                <div className="details-header">
+                  <h3>Anomaly Details</h3>
+                  <button className="btn btn-secondary" onClick={() => setSelectedAnomaly(null)}>
+                    Close
+                  </button>
+                </div>
+                <div className="details-grid">
+                  <div><strong>Severity:</strong> {selectedAnomaly.severity || 'N/A'}</div>
+                  <div><strong>Type:</strong> {selectedAnomaly.type || 'N/A'}</div>
+                  <div><strong>Metric:</strong> {selectedAnomaly.metric || 'N/A'}</div>
+                  <div><strong>Value:</strong> {selectedAnomaly.value?.toFixed(2) || 'N/A'}</div>
+                  <div><strong>Timestamp:</strong> {selectedAnomaly.timestamp ? new Date(selectedAnomaly.timestamp).toLocaleString() : 'N/A'}</div>
+                  <div><strong>ID:</strong> {selectedAnomaly.id || selectedAnomaly._id || 'N/A'}</div>
+                </div>
+                <p className="details-description">{selectedAnomaly.description || 'No description available.'}</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

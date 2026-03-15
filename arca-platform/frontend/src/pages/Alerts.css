@@ -95,6 +95,36 @@
   line-height: 1.5;
 }
 
+.alert-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.details-card {
+  border: 1px solid #d7e3f4;
+  background: #f6fbff;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.details-message {
+  font-size: 14px;
+  color: #263238;
+}
+
 .acknowledged-info {
   font-size: 13px;
   color: #4CAF50;
