@@ -129,7 +129,7 @@
      - Fixed-size data retention
      - Automatic old data eviction
      - Efficient memory management
-   - **Dependencies**: None (utility component)
+   - **Dependencies**: None(utility component)
 
 #### **4. AnomalyDetector**
    - **Type**: Analysis Component
@@ -206,7 +206,11 @@
    - **Schema**: Users, Anomalies, RCAResults, Metrics collections
 
 ---
-
+DONE BY
+PRIYANSHU KUMAR (2301163)
+TADIKONDA LOHITH ADITYA (2301223)
+SHIVANKIT JAISWAL (2301204)
+         
 ## Architecture Diagram
 
 ```mermaid
